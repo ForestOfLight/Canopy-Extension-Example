@@ -1,6 +1,5 @@
 import { world } from '@minecraft/server';
 
-const rules = {};
 class Rule {
     #identifier;
     #description;
@@ -12,7 +11,6 @@ class Rule {
         this.#description = description;
         this.#contingentRules = contingentRules;
         this.#independentRules = independentRules;
-        rules[identifier] = this;
     }
 
     getID() {
@@ -32,17 +30,14 @@ class Rule {
     }
 
     getValue() {
-        return world.getDynamicProperty(this.#identifier);
+        const value = world.getDynamicProperty(this.#identifier);
+        if (value === 'true')
+            return true;
+        if (['false', undefined].includes(value))
+            return false;
+        throw new Error(`Rule ${this.#identifier} has an invalid value: ${value}`);
     }
-
-    static getRule(identifier) {
-        return rules[identifier];
-    }
-
-    static getValue(identifier) {
-        this.getRule(identifier).getValue();
-    }
-
+    
     setValue(value) {
         world.setDynamicProperty(this.#identifier, value);
     }

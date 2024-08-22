@@ -1,9 +1,9 @@
 {
 	"format_version": 2,
 	"header": {
-		"name": "Your Canopy Extension",
-		"description": "This BP extends §l§aCanopy§r by §aForestOfLight§r.",
-		"uuid": "bb50de74-6e59-467b-871f-8ef829ab579f",
+		"name": "Canopy Extension Example",
+		"description": "Example extension for §l§aCanopy§r by §aForestOfLight§r.",
+		"uuid": "e4e844d5-f45b-4623-82a7-534d44bb4c6f",
 		"min_engine_version": [1, 21, 20],
 		"version": [1, 0, 0]
 	},
@@ -11,7 +11,7 @@
 		{
 			"description": "Behavior Pack Module",
 			"type": "data",
-			"uuid": "47787f93-ec3c-4b0c-95fb-55a70e029041",
+			"uuid": "1ce9eab8-0d4a-4e40-a899-575791a1b40d",
 			"version": [1, 0, 0]
 		},
 		{
@@ -19,7 +19,7 @@
 			"type": "script",
 			"language": "javascript",
 			"entry": "scripts/main.js",
-			"uuid": "000abe0b-dcba-43ac-a52f-ee8489a18ce5",
+			"uuid": "839a937e-b4f9-4484-84a4-0db984822f25",
 			"version": [1, 0, 0]
 		}
 	],
