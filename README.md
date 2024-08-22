@@ -10,6 +10,7 @@ What **Canopy** handles:
 
 **`./help`**  
 **Canopy** will automatically include a Rules and a Commands help page for your extension.
+
 ![Help Page](./example_help.png)
 
 What the extension handles:
