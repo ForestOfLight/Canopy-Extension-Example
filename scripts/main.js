@@ -28,7 +28,7 @@ extension.addRule(exampleRule);
 world.afterEvents.buttonPush.subscribe((event) => {
     if (!exampleRule.getValue()) 
         return;
-    if (!event.source) // Always check for undefined entities and players. Simulated players always show up as undefined in events.
+    if (event.source === undefined) // Always check for undefined entities and players. Simulated players always show up as undefined in events.
         return;
     event.source.sendMessage('§aYou pushed a button!');
 });
