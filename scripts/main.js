@@ -43,7 +43,9 @@ extension.addCommand(new Command({
     ],
     contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
     adminOnly: false, // Whether the command can only be run by admins (users with the 'CanopyAdmin' tag)
-    helpEntries: [], // Additional help entries that show up in the help command
+    helpEntries: [ // Additional help entries that show up in the help command
+        { usage: `example`, description: `Run the example command with the default message.` },
+    ],
     helpHidden: false // Whether the command should be hidden from the help command.
 }));
 
@@ -65,6 +67,7 @@ extension.addCommand(new Command({
 // now you can define the function that will be called when the command is executed
 function exampleCommand(sender, args) {
     let { message } = args;
+    if (message === null) message = 'Hello, world!';
     if (!isNaN(parseFloat(value)) && isFinite(value))
         message = message.toString();
     sender.sendMessage(`§aYou ran the example command with the message: §7${message}`);
