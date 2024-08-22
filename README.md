@@ -5,22 +5,22 @@ Extensions?! In a behavior pack?! Yep! This repo contains an example pack design
 
 What **Canopy** handles:
 
-> `./canopy <rule> [true/false]`
+**`./canopy <rule> [true/false]`**  
 **Canopy** will automatically include the names of your rules in the `./canopy` command.
 
-> `./help`  
+**`./help`**  
 **Canopy** will automatically include a Rules and a Commands help page for your extension.
 ![Help Page](./example_help.png)
 
 What the extension handles:
 
-> `./example [message]`  
+**`./example [message]`**  
 This command sends a message to the chat. It also has a default message if no message is provided. (Alias: `./ex`)
 
-> `commandExample`  
+**`commandExample`**  
 This rule will enable the `./example` command.
 
-> `exampleRule`  
+**`exampleRule`**  
 This rule will enable a message in chat when you push a button.
 
 ## How to create an extension
@@ -49,7 +49,7 @@ mv canopy-extension-example your-extension-name
 
 ## How does this work?
 
-**Canopy** and its extensions all communicate using `scriptevents`! The `/scriptevent` command allows for sending strings to Behavior Packs and the `ScriptEventCommandMessage` event allows for recieving them. **Canopy Extensions** use these to communicate with **Canopy** when new rules and commands are added. **Canopy** uses these as well to get rule data, set rule data, and call command callbacks from extensions.
+**Canopy** and its extensions all communicate using scriptevents! The vanilla `/scriptevent` command allows for sending strings to Behavior Packs and the `ScriptEventCommandMessage` event allows for recieving them. **Canopy Extensions** use these to communicate with **Canopy** when new rules and commands are added. **Canopy** uses these as well to get rule data, set rule data, and call command callbacks from extensions.
 
 ## Issues & Suggestions
 
