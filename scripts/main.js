@@ -21,7 +21,8 @@ world.afterEvents.buttonPush.subscribe((event) => {
 })
 
 /**
- * Making a second new Rule:
+ * Making a second new rule which we can use to enable the example command:
+ * (This is not required to make a new command, but it is helpful to allow admins to disable your commands.)
  */
 extension.addRule(Rule({
     identifier: 'commandExample',
