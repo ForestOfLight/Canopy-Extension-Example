@@ -41,7 +41,7 @@ world.afterEvents.buttonPush.subscribe((event) => {
  */
 const commandExampleRule = new Rule({
     identifier: 'commandExample',
-    description: `Enables the example command.`,
+    description: `Enables the example command.`, // Shows up in the help command. Can be a string or RawMessage type.
 });
 extension.addRule(commandExampleRule);
 
@@ -50,7 +50,7 @@ extension.addRule(commandExampleRule);
  */
 const exampleCommand = new Command({
     name: 'example', // The name of the command
-    description: 'An example command that prints your message in chat.', // Shows up in the help command
+    description: 'An example command that prints your message in chat.', // Shows up in the help command. Can be a string or RawMessage type.
     usage: 'example [message]', // The usage of the command that shows up in the help command & when used incorrectly
     callback: exampleCommandCallback, // The function to run when the command is executed
     // Optional:
@@ -60,7 +60,7 @@ const exampleCommand = new Command({
     contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
     adminOnly: false, // Whether the command can only be run by admins (users with the 'CanopyAdmin' tag)
     helpEntries: [ // Additional help entries that show up in the help command
-        { usage: `example`, description: `Run the example command with the default message.` },
+        { usage: `example`, description: `Run the example command with the default message.` }, // Description can be a string or RawMessage type.
     ],
     helpHidden: false // Whether the command should be hidden from the help command.
 });
@@ -68,6 +68,7 @@ extension.addCommand(exampleCommand);
 
 /**
  * Adding a command alias:
+ * This is essentially just adding a new command that runs the same function as the original command and hiding its help.
  */
 const exampleCommandAlias = new Command({
     name: 'ex',
@@ -78,7 +79,7 @@ const exampleCommandAlias = new Command({
         { type: 'string|number', name: 'message' }
     ],
     contingentRules: ['commandExample'],
-    helpHidden: true, // notice this difference
+    helpHidden: true
 });
 extension.addCommand(exampleCommandAlias);
 
