@@ -55,9 +55,9 @@ class Rule {
 
     getValue() {
         const value = world.getDynamicProperty(this.#identifier);
-        if (value === true)
+        if (String(value) === 'true')
             return true;
-        if ([false, undefined].includes(value))
+        if (['false', 'undefined'].includes(String(value)))
             return false;
         throw new Error(`Rule ${this.#identifier} has an invalid value: ${value} (${typeof value})`);
     }
