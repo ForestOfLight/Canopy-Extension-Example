@@ -50,7 +50,8 @@ mv canopy-extension-example your-extension-name
 
 ## How does this work?
 
-**Canopy** and its extensions all communicate using scriptevents! The vanilla `/scriptevent` command allows for sending strings to Behavior Packs and the `ScriptEventCommandMessage` event allows for recieving them. **Canopy Extensions** use these to communicate with **Canopy** when new rules and commands are added. **Canopy** uses these as well to get rule data, set rule data, and call command callbacks from extensions.
+**Canopy** and its extensions all communicate using scriptevents! The vanilla `/scriptevent` command allows for sending strings to Behavior Packs and the `ScriptEventCommandMessage` event allows for recieving them. **Canopy** uses [MCBE-IPC](https://https://github.com/OmniacDev/MCBE-IPC), a library that streamlines the process of sending and recieving scriptevents.  
+**Canopy Extensions** use these to communicate with **Canopy** when new rules and commands are added. **Canopy** uses these as well to get rule data, set rule data, and call command callbacks from extensions.  
 
 ## Issues & Suggestions
 
