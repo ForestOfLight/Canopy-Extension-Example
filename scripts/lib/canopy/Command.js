@@ -101,8 +101,9 @@ class Command {
 	}
 }
 
-IPC.on('canopy:commandPrefix', (prefix) => {
-	Command.setPrefix(prefix);
+const prefix = await IPC.invoke(`canopy:getCommandPrefix`).then(result => {
+	return result;
 });
+Command.setPrefix(prefix);
 
 export default Command;

@@ -29,31 +29,47 @@ import Rule from './Rule';
 
 class CanopyExtension {
     name;
-    description;
     version;
+    author;
+    description;
     #commands = {};
     #rules = {};
 
-    constructor({ name = 'Unnamed', description = '', version = '1.0.0' }) {
-        if (name.includes(' ')) {
-            throw new Error('Extension name cannot contain spaces.');
+    constructor({ name = 'Unnamed', version = '1.0.0', author = 'Unknown', description = { text: '' } }) {
+        if (this.hasWhitespace(name)) {
+            throw new Error('Extension name cannot contain whitespace.');
         }
         this.name = name;
+        this.version = version;
+        this.author = author;
         this.description = description;
         if (!this.isValidVersion(version)) {
             throw new Error('Version must be in format #.#.#');
         }
-        this.version = version;
-
+        
+        this.registerExtension();
         this.handleCommandCallbacks();
         this.handleRuleValueRequests();
         this.handleRuleValueSetters();
+    }
+
+    hasWhitespace(str) {
+        return /\s/.test(str);
     }
 
     isValidVersion(version) {
         if (/^\d+\.\d+\.\d+$/.test(version))
             return true;
         return false;
+    }
+
+    registerExtension() {
+        IPC.send('canopyExtension:registerExtension', {
+            name: this.name,
+            version: this.version,
+            author: this.author,
+            description: this.description
+        });
     }
     
     addCommand(command) {
