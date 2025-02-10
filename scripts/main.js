@@ -7,7 +7,7 @@ import { world } from '@minecraft/server';
 const extension = new CanopyExtension({
     name: 'ExampleExtension',
     description: 'Example extension for §l§aCanopy§r!',
-    version: '1.0.0',
+    version: '1.0.0'
 });
 
 // --------------------------------------------
@@ -41,7 +41,7 @@ world.afterEvents.buttonPush.subscribe((event) => {
  */
 const commandExampleRule = new Rule({
     identifier: 'commandExample',
-    description: `Enables the example command.`, // Shows up in the help command. Can be a string or RawMessage type.
+    description: `Enables the example command.` // Shows up in the help command. Can be a string or RawMessage type.
 });
 extension.addRule(commandExampleRule);
 
@@ -60,7 +60,7 @@ const exampleCommand = new Command({
     contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
     adminOnly: false, // Whether the command can only be run by admins (users with the 'CanopyAdmin' tag)
     helpEntries: [ // Additional help entries that show up in the help command
-        { usage: `example`, description: `Run the example command with the default message.` }, // Description can be a string or RawMessage type.
+        { usage: `example`, description: `Run the example command with the default message.` } // Description can be a string or RawMessage type.
     ],
     helpHidden: false // Whether the command should be hidden from the help command.
 });
@@ -86,7 +86,7 @@ extension.addCommand(exampleCommandAlias);
 // now you can define the function that will be called when the command is executed
 function exampleCommandCallback(sender, args) {
     let { message } = args;
-    if (message === null) 
+    if (message === null)
         message = 'Hello, world!';
     if (!isNaN(parseFloat(message)) && isFinite(message))
         message = message.toString();
