@@ -1,4 +1,5 @@
 # Canopy Extension Example
+
 Extensions?! In a behavior pack?! Yep! This repo contains an example pack designed to teach you how to create your own extensions for **Canopy**. All extensions must be added to the same world as **Canopy** (the dependencies in the `manifest.json` should ensure that).
 
 ## How this example pack functions ingame
@@ -25,15 +26,16 @@ This rule will enable the `./example` command.
 This rule will enable a message in chat when you push a button.
 
 ## How to create an extension
+
 1. Clone this repo.   
-```
-git clone https://github.com/ForestOfLight/canopy-extension-example.git
-```
+    ```sh
+    git clone https://github.com/ForestOfLight/canopy-extension-example.git
+    ```
 2. Remove all files that are not the `pack_icon.png`, the `manifest.json` file, or in the `scripts/` folder.
 3. Rename the folder to your extension's name.   
-```
-mv canopy-extension-example your-extension-name
-```
+    ```sh
+    mv canopy-extension-example your-extension-name
+    ```
 4. Open the folder in your favorite code editor.
 5. Edit the `manifest.json` file to match your extension's information.
 6. Replace the `pack_icon.png` with your extension's icon.
@@ -43,6 +45,7 @@ mv canopy-extension-example your-extension-name
 > Most information about how to code a **Canopy Extension** can be found in the `main.js` file.
 
 ## How to use an extension
+
 1. Add the extension pack to the same world as the **Canopy** RP & BP.
 2. Profit.
 
