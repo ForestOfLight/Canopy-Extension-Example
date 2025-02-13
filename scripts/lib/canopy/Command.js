@@ -22,7 +22,6 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import IPC from "lib/ipc/ipc";
 
 class Command {
     #name;
@@ -100,10 +99,5 @@ class Command {
 		return Command.#prefix;
 	}
 }
-
-const prefix = await IPC.invoke(`canopy:getCommandPrefix`).then(result => {
-	return result;
-});
-Command.setPrefix(prefix);
 
 export default Command;
