@@ -51,18 +51,16 @@ class CanopyExtension {
     }
     
     addCommand(command) {
-        if (!(command instanceof Command)) {
+        if (!(command instanceof Command))
             throw new Error('Command must be an instance of Command.');
-        }
         this.#commands[command.getName()] = command;
         if (this.#isRegistrationReady)
             this.#registerCommand(command);
     }
 
     addRule(rule) {
-        if (!(rule instanceof Rule)) {
+        if (!(rule instanceof Rule))
             throw new Error('Rule must be an instance of Rule.');
-        }
         this.#rules[rule.getID()] = rule;
         if (this.#isRegistrationReady)
             this.#registerRule(rule);
@@ -90,7 +88,6 @@ class CanopyExtension {
         });
         IPC.once(`canopyExtension:${this.id}:registrationReady`, () => {
             this.#isRegistrationReady = true;
-            console.warn(`[${this.name}] Extension is now ready for registration.`);
             for (const rule of Object.values(this.#rules))
                 this.#registerRule(rule);
             for (const command of Object.values(this.#commands))
@@ -99,7 +96,6 @@ class CanopyExtension {
     }
 
     #registerCommand(command) {
-        console.warn(`[${this.name}] Registering command: ${command.getName()}`);
         IPC.send(`canopyExtension:${this.id}:registerCommand`, {
             name: command.getName(),
             description: command.getDescription(),
@@ -121,13 +117,11 @@ class CanopyExtension {
             const sender = world.getPlayers({ name: cmdData.senderName })[0];
             if (!sender)
                 throw new Error(`Sender ${cmdData.senderName} of ${cmdData.commandName} not found.`);
-            // console.warn(`[${this.name}] Received command callback from ${cmdData.senderName}: ${cmdData.commandName} ${JSON.stringify(cmdData.args)}`);
             this.#commands[cmdData.commandName].runCallback(sender, cmdData.args);
         });
     }
 
     #registerRule(rule) {
-        console.warn(`[${this.name}] Registering rule: ${rule.getID()}`);
         IPC.send(`canopyExtension:${this.id}:registerRule`, {
             identifier: rule.getID(),
             description: rule.getDescription(),
@@ -143,7 +137,6 @@ class CanopyExtension {
             if (!rule)
                 throw new Error(`Rule ${data.ruleID} not found.`);
             const value = rule.getValue();
-            // console.warn(`[${this.name}] Returning rule value for ${data.ruleID}: ${value} (${typeof value})`);
             return value;
         });
     }
@@ -153,12 +146,11 @@ class CanopyExtension {
             const rule = this.#rules[data.ruleID];
             if (!rule)
                 throw new Error(`Rule ${data.ruleID} not found.`);
-            // console.warn(`[${this.name}] Setting rule value: ${data.ruleID} ${data.value}`);
             rule.setValue(data.value);
         });
     }
 
-    #setupCommandPrefix() { // If this doesn't work, async it.
+    #setupCommandPrefix() {
         const prefix = IPC.invoke(`canopyExtension:getCommandPrefix`).then(result => {
             Command.setPrefix(result);
         });
