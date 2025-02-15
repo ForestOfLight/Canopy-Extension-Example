@@ -5,6 +5,7 @@ import { world } from '@minecraft/server';
  * Create a new CanopyExtension instance to define your extension.
  */
 const extension = new CanopyExtension({
+    author: 'YourName',
     name: 'ExampleExtension',
     description: 'Example extension for §l§aCanopy§r!',
     version: '1.0.0'

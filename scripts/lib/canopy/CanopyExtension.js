@@ -34,6 +34,7 @@ class CanopyExtension {
     description;
     #commands = {};
     #rules = {};
+    #isRegistrationReady = false;
 
     constructor({ name = 'Unnamed', version = '1.0.0', author = 'Unknown', description = { text: '' } }) {
         this.id = this.#makeID(name);
@@ -43,6 +44,7 @@ class CanopyExtension {
         this.description = description;
 
         this.#registerExtension();
+        this.#setupCommandPrefix();
         this.#handleCommandCallbacks();
         this.#handleRuleValueRequests();
         this.#handleRuleValueSetters();
@@ -53,7 +55,8 @@ class CanopyExtension {
             throw new Error('Command must be an instance of Command.');
         }
         this.#commands[command.getName()] = command;
-        this.#registerCommand(command);
+        if (this.#isRegistrationReady)
+            this.#registerCommand(command);
     }
 
     addRule(rule) {
@@ -61,7 +64,8 @@ class CanopyExtension {
             throw new Error('Rule must be an instance of Rule.');
         }
         this.#rules[rule.getID()] = rule;
-        this.#registerRule(rule);
+        if (this.#isRegistrationReady)
+            this.#registerRule(rule);
     }
 
     getRuleValue(ruleID) {
@@ -84,11 +88,18 @@ class CanopyExtension {
             author: this.author,
             description: this.description
         });
-        this.#setupCommandPrefix();
+        IPC.once(`canopyExtension:${this.id}:registrationReady`, () => {
+            this.#isRegistrationReady = true;
+            console.warn(`[${this.name}] Extension is now ready for registration.`);
+            for (const rule of Object.values(this.#rules))
+                this.#registerRule(rule);
+            for (const command of Object.values(this.#commands))
+                this.#registerCommand(command);
+        });
     }
 
     #registerCommand(command) {
-        // console.warn(`[${this.name}] Registering command: ${command.getName()}`);
+        console.warn(`[${this.name}] Registering command: ${command.getName()}`);
         IPC.send(`canopyExtension:${this.id}:registerCommand`, {
             name: command.getName(),
             description: command.getDescription(),
@@ -116,7 +127,7 @@ class CanopyExtension {
     }
 
     #registerRule(rule) {
-        // console.warn(`[${this.name}] Registering rule: ${rule.getID()}`);
+        console.warn(`[${this.name}] Registering rule: ${rule.getID()}`);
         IPC.send(`canopyExtension:${this.id}:registerRule`, {
             identifier: rule.getID(),
             description: rule.getDescription(),
