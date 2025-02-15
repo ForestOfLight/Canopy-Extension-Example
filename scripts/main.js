@@ -1,4 +1,4 @@
-import { CanopyExtension, Command, Rule } from 'lib/canopy/CanopyExtension';
+import { CanopyExtension, Command, Rule } from './lib/canopy/CanopyExtension';
 import { world } from '@minecraft/server';
 
 /**
