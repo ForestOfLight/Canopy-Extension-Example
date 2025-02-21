@@ -81,11 +81,13 @@ class CanopyExtension {
     }
 
     #registerExtension() {
-        IPC.send('canopyExtension:registerExtension', RegisterExtension, {
-            name: this.name,
-            version: this.version,
-            author: this.author,
-            description: this.description
+        IPC.once('canopyExtension:ready', Ready, () => {
+            IPC.send('canopyExtension:registerExtension', RegisterExtension, {
+                name: this.name,
+                version: this.version,
+                author: this.author,
+                description: this.description
+            });
         });
         IPC.once(`canopyExtension:${this.id}:ready`, Ready, () => {
             this.#isRegistrationReady = true;
