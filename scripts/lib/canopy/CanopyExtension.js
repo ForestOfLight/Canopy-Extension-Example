@@ -133,6 +133,8 @@ class CanopyExtension {
             independentRules: rule.getIndependentRules(),
             extensionName: this.name
         });
+        if (rule.getValue() === true)
+            rule.onEnable();
     }
 
     #handleRuleValueRequests() {
@@ -150,7 +152,6 @@ class CanopyExtension {
             const rule = this.#rules[data.ruleID];
             if (!rule)
                 throw new Error(`Rule ${data.ruleID} not found.`);
-            // onEnable & onDisable can originate here
             rule.setValue(data.value);
         });
     }

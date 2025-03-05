@@ -18,21 +18,23 @@ const extension = new CanopyExtension({
  */
 const exampleRule = new Rule({
     identifier: 'exampleRule', // The name of the rule
-    description: { text: 'An example rule that prints a message in chat when you hit a button.' }, // Shows up in the help command. Must be a RawMessage type.
+    description: { text: 'An example rule that prints a message in chat when you hit a button.' }, // Shows up in the help command. Must be a RawMessage type (translatable!).
     // Optional:
-    contingentRules: [], // Rules that will be set to true when this rule is set to true
-    independentRules: [] // Rules that will be set to false when this rule is set to true
+    contingentRules: [], // Rules that will be enabled when this rule is enabled
+    independentRules: [], // Rules that will be disabled when this rule is enabled
+    onEnableCallback: () => world.afterEvents.buttonPush.subscribe(onButtonPush), // Function to run when the rule is enabled (also runs when the extension is loaded, if the rule is already enabled)
+    onDisableCallback: () => world.afterEvents.buttonPush.unsubscribe(onButtonPush) // Function to run when the rule is disabled
 });
 extension.addRule(exampleRule);
 
 // use the rule to control your code flow
-world.afterEvents.buttonPush.subscribe((event) => {
+function onButtonPush(event) {
     if (!exampleRule.getValue()) 
         return;
     if (event.source === undefined) // Always check for undefined entities and players. Simulated players always show up as undefined in events.
         return;
     event.source.sendMessage('§aYou pushed a button!');
-});
+}
 
 // --------------------------------------------
 
@@ -51,7 +53,7 @@ extension.addRule(commandExampleRule);
  */
 const exampleCommand = new Command({
     name: 'example', // The name of the command
-    description: 'An example command that prints your message in chat.', // Shows up in the help command. Can be a string or RawMessage type.
+    description: { text: 'An example command that prints your message in chat.' }, // Shows up in the help command. RawMessage type.
     usage: 'example [message]', // The usage of the command that shows up in the help command & when used incorrectly
     callback: exampleCommandCallback, // The function to run when the command is executed
     // Optional:
@@ -61,7 +63,7 @@ const exampleCommand = new Command({
     contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
     adminOnly: false, // Whether the command can only be run by admins (users with the 'CanopyAdmin' tag)
     helpEntries: [ // Additional help entries that show up in the help command
-        { usage: `example`, description: `Run the example command with the default message.` } // Description can be a string or RawMessage type.
+        { usage: `example`, description: { text: `Run the example command with the default message.` } } // Description is a RawMessage type.
     ],
     helpHidden: false // Whether the command should be hidden from the help command.
 });
@@ -73,7 +75,7 @@ extension.addCommand(exampleCommand);
  */
 const exampleCommandAlias = new Command({
     name: 'ex',
-    description: 'An alias for the example command.',
+    description: { text: 'An alias for the example command.' },
     usage: 'ex [message]',
     callback: exampleCommandCallback,
     args: [
