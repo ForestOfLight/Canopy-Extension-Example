@@ -18,7 +18,7 @@ const extension = new CanopyExtension({
  */
 const exampleRule = new Rule({
     identifier: 'exampleRule', // The name of the rule
-    description: 'An example rule that prints a message in chat when you hit a button.', // Shows up in the help command
+    description: { text: 'An example rule that prints a message in chat when you hit a button.' }, // Shows up in the help command. Must be a RawMessage type.
     // Optional:
     contingentRules: [], // Rules that will be set to true when this rule is set to true
     independentRules: [] // Rules that will be set to false when this rule is set to true
@@ -42,7 +42,7 @@ world.afterEvents.buttonPush.subscribe((event) => {
  */
 const commandExampleRule = new Rule({
     identifier: 'commandExample',
-    description: `Enables the example command.` // Shows up in the help command. Can be a string or RawMessage type.
+    description: { text: 'Enables the example command.' } // Shows up in the help command. RawMessage type.
 });
 extension.addRule(commandExampleRule);
 
