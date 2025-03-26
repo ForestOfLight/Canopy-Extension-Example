@@ -40,14 +40,14 @@ This rule will enable a message in chat when you push a button.
 ## How to create an extension
 
 1. Clone this repo.   
-    ```sh
-    git clone https://github.com/ForestOfLight/canopy-extension-example.git
-    ```
+```sh
+git clone https://github.com/ForestOfLight/canopy-extension-example.git
+```
 2. Remove all files that are not the `pack_icon.png`, the `manifest.json` file, or in the `scripts/` folder.
 3. Rename the folder to your extension's name.   
-    ```sh
-    mv canopy-extension-example your-extension-name
-    ```
+```sh
+mv canopy-extension-example your-extension-name
+```
 4. Open the folder in your favorite code editor.
 5. Edit the `manifest.json` file to match your extension's information.
 6. Replace the `pack_icon.png` with your extension's icon.
