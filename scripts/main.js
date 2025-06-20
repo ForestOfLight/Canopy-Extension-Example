@@ -61,7 +61,7 @@ const exampleCommand = new Command({
         { type: 'string|number', name: 'message' } // The arguments that the command takes. 'string|number' means it can be either a string or a number
     ],
     contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
-    adminOnly: false, // Whether the command can only be run by admins (users with the 'CanopyAdmin' tag)
+    adminOnly: false, // Whether the command can only be run by OPs
     helpEntries: [ // Additional help entries that show up in the help command
         { usage: `example`, description: { text: `Run the example command with the default message.` } } // Description is a RawMessage type.
     ],
