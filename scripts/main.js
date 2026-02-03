@@ -1,10 +1,11 @@
-import { CanopyExtension, Command, Rule } from './lib/canopy/CanopyExtension';
-import { world } from '@minecraft/server';
+import { BlockCommandOrigin, BooleanRule, CanopyExtension, Command, EntityCommandOrigin, IntegerRule, PlayerCommandOrigin, ServerCommandOrigin } from './lib/canopy/CanopyExtension';
+import { world, CustomCommandParamType, CommandPermissionLevel } from '@minecraft/server';
 
 /**
  * Create a new CanopyExtension instance to define your extension.
+ * Your extension must be exported from main.js.
  */
-const extension = new CanopyExtension({
+export const extension = new CanopyExtension({
     author: 'YourName',
     name: 'ExampleExtension',
     description: 'Example extension for §l§aCanopy§r!',
@@ -16,25 +17,37 @@ const extension = new CanopyExtension({
 /**
  * Adding a new Rule:
  */
-const exampleRule = new Rule({
+const exampleRule = new BooleanRule({
     identifier: 'exampleRule', // The name of the rule
-    description: { text: 'An example rule that prints a message in chat when you hit a button.' }, // Shows up in the help command. Must be a RawMessage type (translatable!).
+    description: 'An example rule that prints a message in chat when you hit a button.', // Shows up in the help command. Can be String or RawText type.
     // Optional:
-    contingentRules: [], // Rules that will be enabled when this rule is enabled
-    independentRules: [], // Rules that will be disabled when this rule is enabled
-    onEnableCallback: () => world.afterEvents.buttonPush.subscribe(onButtonPush), // Function to run when the rule is enabled (also runs when the extension is loaded, if the rule is already enabled)
-    onDisableCallback: () => world.afterEvents.buttonPush.unsubscribe(onButtonPush) // Function to run when the rule is disabled
+    defaultValue: true, // The default value if the rule is uninitialized.
+    contingentRules: [], // Rules that will be set to true when this rule is set to true.
+    independentRules: [], // Rules that will be set to false when this rule is set to true.
+    // Optional for BooleanRule:
+    onEnableCallback: () => {}, // A function to run when the rule is set to true.
+    onDisableCallback: () => {} // A function to run when the rule is set to false.
 });
 extension.addRule(exampleRule);
 
-// use the rule to control your code flow
-function onButtonPush(event) {
+// Use the rule to control your code flow.
+world.afterEvents.buttonPush.subscribe((event) => {
     if (!exampleRule.getValue()) 
         return;
     if (event.source === undefined) // Always check for undefined entities and players. Simulated players always show up as undefined in events.
         return;
     event.source.sendMessage('§aYou pushed a button!');
-}
+});
+
+const exampleIntegerRule = new IntegerRule({
+    identifier: 'exampleIntegerRule',
+    description: 'An example rule that prints a message in chat when you modify its value.',
+    // Mandatory for IntegerRule and FloatRule:
+    valueRange: { range: { min: 0.0, max: 10.0 }, other: [-1.0] }, // All values must be floats. The rule will accept values within the range or that match any value in the "other" category.
+    // Optional for IntegerRule and FloatRule:
+    onModifyCallback: (value) => { world.sendMessage(`§aYou modified the example integer rule to ${value}!`) } // A function to run when the rule is modified.
+});
+extension.addRule(exampleIntegerRule);
 
 // --------------------------------------------
 
@@ -42,7 +55,7 @@ function onButtonPush(event) {
  * Making a second new rule which we can use to enable the example command:
  * (This is not required to make a new command, but it is helpful to allow admins to disable your commands.)
  */
-const commandExampleRule = new Rule({
+const commandExampleRule = new BooleanRule({
     identifier: 'commandExample',
     description: { text: 'Enables the example command.' } // Shows up in the help command. RawMessage type.
 });
@@ -51,47 +64,27 @@ extension.addRule(commandExampleRule);
 /**
  * Adding a new Command:
  */
-const exampleCommand = new Command({
-    name: 'example', // The name of the command
-    description: { text: 'An example command that prints your message in chat.' }, // Shows up in the help command. RawMessage type.
-    usage: 'example [message]', // The usage of the command that shows up in the help command & when used incorrectly
-    callback: exampleCommandCallback, // The function to run when the command is executed
+new Command({
+    // Takes the same parameters as the Mojang CustomCommand Interface:
+    // https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/server/customcommand?view=minecraft-bedrock-experimental
+    // However, a few extras features are added and cheatsRequired defaults to false instead of true.
+    name: 'namespace:example',
+    description: 'An example command that prints your message in chat.',
+    permissionLevel: CommandPermissionLevel.Any,
+    callback: exampleCommandCallback, // The function to run when the command is executed. 
+        // The first argument is the origin and the rest are the command arguments.
+        // The origin command argument allows using getSource() to get the source entity and sendMessage() directly.
     // Optional:
-    args: [
-        { type: 'string|number', name: 'message' } // The arguments that the command takes. 'string|number' means it can be either a string or a number
+    optionalParameters: [
+        { name: 'message', type: CustomCommandParamType.String }
     ],
-    contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled
-    adminOnly: false, // Whether the command can only be run by OPs
-    helpEntries: [ // Additional help entries that show up in the help command
-        { usage: `example`, description: { text: `Run the example command with the default message.` } } // Description is a RawMessage type.
-    ],
-    helpHidden: false // Whether the command should be hidden from the help command.
+    contingentRules: ['commandExample'], // Rules that must be true for the command to be enabled.
+    allowedSources: [PlayerCommandOrigin, BlockCommandOrigin, EntityCommandOrigin, ServerCommandOrigin] // Which types of command origins can run this command.
 });
-extension.addCommand(exampleCommand);
 
-/**
- * Adding a command alias:
- * This is essentially just adding a new command that runs the same function as the original command and hiding its help.
- */
-const exampleCommandAlias = new Command({
-    name: 'ex',
-    description: { text: 'An alias for the example command.' },
-    usage: 'ex [message]',
-    callback: exampleCommandCallback,
-    args: [
-        { type: 'string|number', name: 'message' }
-    ],
-    contingentRules: ['commandExample'],
-    helpHidden: true
-});
-extension.addCommand(exampleCommandAlias);
-
-// now you can define the function that will be called when the command is executed
-function exampleCommandCallback(sender, args) {
-    let { message } = args;
-    if (message === null)
+// Now you can define the function that will be called when the command is executed.
+function exampleCommandCallback(sender, message) {
+    if (message === undefined)
         message = 'Hello, world!';
-    if (!isNaN(parseFloat(message)) && isFinite(message))
-        message = message.toString();
     sender.sendMessage(`§aYou ran the example command with the message: §7${message}`);
 }

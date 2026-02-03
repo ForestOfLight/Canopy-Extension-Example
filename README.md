@@ -5,7 +5,7 @@
     <p><b>Canopy Extension Example</b></p>
 
 [![Codacy Quality](https://app.codacy.com/project/badge/Grade/10040a714ad84a2f912d4dae9d3f6e57)](https://app.codacy.com/gh/ForestOfLight/Canopy-Extension-Example/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Minecraft - Version](https://img.shields.io/badge/Minecraft-v1.21.70_(Bedrock)-brightgreen)](https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs)
+[![Minecraft - Version](https://img.shields.io/badge/Minecraft-v26.10_(Bedrock)-brightgreen)](https://feedback.minecraft.net/hc/en-us/sections/360001186971-Release-Changelogs)
 [![GitHub License](https://img.shields.io/github/license/forestoflight/canopy-extension-example)](LICENSE)
 [![Discord](https://badgen.net/discord/members/9KGche8fxm?icon=discord&label=Discord&list=what)](https://discord.gg/9KGche8fxm)
 </div>
@@ -22,20 +22,23 @@ What **Canopy** handles:
 **Canopy** will automatically include the names of your rules in the `./canopy` command.
 
 **`./help`**  
-**Canopy** will automatically include a Rules and a Commands help page for your extension.
+**Canopy** will automatically include a Rules help page for your extension.
 
 ![Help Page](./example_help.png)
 
 What the extension handles:
 
-**`./example [message]`**  
-This command sends a message to the chat. It also has a default message if no message is provided. (Alias: `./ex`)
+**`/example [message]`**  
+This command sends a message to the chat. It also has a default message if no message is provided.
 
 **`commandExample`**  
-This rule will enable the `./example` command.
+This rule will enable the `/example` command.
 
 **`exampleRule`**  
 This rule will enable a message in chat when you push a button.
+
+**`exampleIntegerRule`**  
+This rule will prints a message in chat when you modify its value.
 
 ## How to create an extension
 
@@ -66,8 +69,8 @@ mv canopy-extension-example your-extension-name
 ## How does this work?
 
 **Canopy** and its extensions all communicate using scriptevents! The vanilla `/scriptevent` command allows for sending strings to Behavior Packs and the `ScriptEventCommandMessage` event allows for recieving them. **Canopy** uses [MCBE-IPC](https://https://github.com/OmniacDev/MCBE-IPC), a library that streamlines the process of sending and recieving scriptevents.  
-**Canopy Extensions** use these to communicate with **Canopy** when new rules and commands are added. **Canopy** uses these as well to get rule data, set rule data, and call command callbacks from extensions.  
+**Canopy Extensions** use these to communicate with **Canopy** when new rules are added. **Canopy** uses these as well to get and set rule data from extensions.
 
 ## Issues & Suggestions
 
-If you have any issues or suggestions, please open an issue on this repo. Additionally, if you're interested in contributing to the project, feel free to open a pull request! 
+If you have any issues or suggestions, please open an issue on this repo. Additionally, if you're interested in contributing to the project, feel free to open a pull request!
