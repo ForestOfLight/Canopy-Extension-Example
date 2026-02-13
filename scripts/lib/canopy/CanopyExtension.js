@@ -34,6 +34,7 @@ import { Rule } from './Rule';
 import { BooleanRule } from './BooleanRule';
 import { IntegerRule } from './IntegerRule';
 import { FloatRule } from './FloatRule';
+import { system } from '@minecraft/server';
 
 class CanopyExtension {
     name;
@@ -77,6 +78,10 @@ class CanopyExtension {
     }
 
     #registerExtension() {
+        system.runTimeout(() => {
+            if (!this.#isRegistrationReady)
+                world.sendMessage(`§c[${this.name}] Error: Canopy was not found. Please install a compatible version of Canopy. Canopy is required to edit rules.`);
+        }, 10);
         IPC.once('canopyExtension:ready', Ready, () => {
             IPC.send('canopyExtension:registerExtension', RegisterExtension, {
                 name: this.name,
