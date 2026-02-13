@@ -24,6 +24,7 @@
  */
 import IPC from '../../lib/ipc/ipc';
 import { Ready, RegisterExtension, RegisterRule, RuleValueRequest, RuleValueSet, RuleValueResponse } from './extension.ipc';
+import { system, world  } from '@minecraft/server';
 import { Command } from './Command';
 import { BlockCommandOrigin } from './BlockCommandOrigin';
 import { EntityCommandOrigin } from './EntityCommandOrigin';
@@ -34,7 +35,6 @@ import { Rule } from './Rule';
 import { BooleanRule } from './BooleanRule';
 import { IntegerRule } from './IntegerRule';
 import { FloatRule } from './FloatRule';
-import { system } from '@minecraft/server';
 
 class CanopyExtension {
     name;
